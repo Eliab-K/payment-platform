@@ -1,0 +1,43 @@
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.27"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  APP_ENV: staging
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  cpu: 70
+
+ingress:
+  enabled: true
+  className: nginx
+  host: payment-staging.example.com
+
+secret:
+  dbPassword: stagingpassword
+
+postgres:
+  image: postgres:16
+  username: paymentuser
+  password: paymentpass
+  database: paymentdb
+  storage: 5Gi

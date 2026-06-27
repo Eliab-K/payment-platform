@@ -1,0 +1,51 @@
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.27"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  APP_ENV: production
+
+secret:
+  dbPassword: SuperSecret123
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+postgres:
+  image: postgres:16
+
+  database: paymentdb
+  username: paymentuser
+  password: paymentpass
+
+  storage: 5Gi
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+
+serviceMonitor:
+  enabled: false

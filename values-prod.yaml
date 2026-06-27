@@ -1,0 +1,43 @@
+replicaCount: 4
+
+image:
+  repository: nginx
+  tag: "1.27"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  APP_ENV: production
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 4
+  maxReplicas: 10
+  cpu: 70
+
+ingress:
+  enabled: true
+  className: nginx
+  host: payments.example.com
+
+secret:
+  dbPassword: productionpassword
+
+postgres:
+  image: postgres:16
+  username: paymentuser
+  password: paymentpass
+  database: paymentdb
+  storage: 20Gi
